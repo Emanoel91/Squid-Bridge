@@ -535,7 +535,7 @@ with col1:
 
 # Chart 2
 with col2:
-    fig2 = px.line(df, x="Date", y="Retention Rate", title="%User Retention Rate Over Time")
+    fig2 = px.area(df, x="Date", y="Retention Rate", title="%User Retention Rate Over Time")
     fig2.update_layout(
         xaxis_title=" ",
         yaxis_title="%",
