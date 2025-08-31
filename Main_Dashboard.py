@@ -206,7 +206,7 @@ def load_time_series_data(timeframe, start_date, end_date):
 
 # --- Load Data ----------------------------------------------------------------------------------------------------
 df_ts = load_time_series_data(timeframe, start_date, end_date)
-# --- Row 3 --------------------------------------------------------------------------------------------------------
+# --- Row 1 --------------------------------------------------------------------------------------------------------
 col1, col2 = st.columns(2)
 
 with col1:
@@ -406,7 +406,7 @@ fig1.update_traces(textinfo="percent+label", textposition="inside", automargin=T
 
 
 fig2 = px.bar(
-        top_vol.sort_values("SWAPPER_COUNT", ascending=False),
+        df_pie.sort_values("SWAPPER_COUNT", ascending=False),
         x="SOURCE_CHAIN", 
         y="SWAPPER_COUNT",
         title="Number of users by chain",
