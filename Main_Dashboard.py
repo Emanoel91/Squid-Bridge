@@ -215,7 +215,7 @@ with col1:
         x=df_ts["DATE"], 
         y=df_ts["TOTAL_NUMBER_OF_BRIDGES"], 
         name="Total Number of Bridges", 
-        mode="lines+markers", 
+        mode="lines", 
         yaxis="y2",
         line=dict(color="#fe2708", width=2),   
         marker=dict(color="#fe2708", size=6)   
@@ -251,7 +251,7 @@ with col2:
         x=df_ts["DATE"], 
         y=df_ts["TOTAL_BRIDGED_VOLUME"], 
         name="Total Bridged Volume", 
-        mode="lines+markers", 
+        mode="lines", 
         yaxis="y2",
         line=dict(color="#0099ff", width=2),  
         marker=dict(color="#0099ff", size=6)             
