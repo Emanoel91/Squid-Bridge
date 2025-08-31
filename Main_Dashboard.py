@@ -392,11 +392,11 @@ def load_pie_data(start_date, end_date):
 df_pie = load_pie_data(start_date, end_date)
 
 # --- Layout -----------------------------------------------------------------
-col1= st.columns(1)
+col1 = st.columns(1)
 
-with col1:
+with col1[0]:
     fig1 = px.bar(
-        top_vol.sort_values("SWAPPER_COUNT", ascending=False),
+        df_pie.sort_values("SWAPPER_COUNT", ascending=False).head(10),
         x="SOURCE_CHAIN", 
         y="SWAPPER_COUNT",
         title="Top 10 Source Chains by Bridged Volume (USD)",
@@ -406,4 +406,5 @@ with col1:
     )
     fig1.update_traces(texttemplate='%{text:.2s}', textposition='outside')  
     fig1.update_layout(xaxis={'categoryorder':'total descending'})         
-    st.plotly_chart(fig1, use_container_width=True)
+    st.plotly_chart(fig1, use_container_width=True, key="source_chains_bar")
+
