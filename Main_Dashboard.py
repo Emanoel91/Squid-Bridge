@@ -520,13 +520,13 @@ col1, col2 = st.columns(2)
 with col1:
     fig1 = go.Figure()
     fig1.add_trace(go.Bar(x=df["Date"], y=df["Active Users"], name="Active Users"))
-    fig1.add_trace(go.Bar(x=df["Date"], y=df["New Users"], name="New Users", color="yellow"))
+    fig1.add_trace(go.Bar(x=df["Date"], y=df["New Users"], name="New Users"))
 
     fig1.add_trace(go.Scatter(
         x=df["Date"], y=df["Total Users"],
         name="Total Users",
         mode="lines",
-        line=dict(width=3, color="blue"),
+        line=dict(width=3, color="black"),
         yaxis="y1"  
     ))
 
@@ -534,7 +534,7 @@ with col1:
         x=df["Date"], y=df["User Growth"],
         name="User Growth",
         mode="lines",
-        line=dict(width=3, dash="dot", color="orange"),
+        line=dict(width=3, dash="dot", color="green"),
         yaxis="y2"  
     ))
 
