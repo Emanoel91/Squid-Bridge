@@ -519,40 +519,35 @@ col1, col2 = st.columns(2)
 # Chart 1
 with col1:
     fig1 = go.Figure()
-
-    # ستون‌های Active و New Users
     fig1.add_trace(go.Bar(x=df["Date"], y=df["Active Users"], name="Active Users"))
     fig1.add_trace(go.Bar(x=df["Date"], y=df["New Users"], name="New Users"))
 
-    # خط Total Users
     fig1.add_trace(go.Scatter(
         x=df["Date"], y=df["Total Users"],
         name="Total Users",
         mode="lines",
         line=dict(width=3, color="blue"),
-        yaxis="y1"  # محور سمت چپ
+        yaxis="y1"  
     ))
 
-    # خط User Growth (روی محور دوم سمت راست)
     fig1.add_trace(go.Scatter(
         x=df["Date"], y=df["User Growth"],
         name="User Growth",
         mode="lines",
-        line=dict(width=3, dash="dot", color="green"),
-        yaxis="y2"  # محور سمت راست
+        line=dict(width=3, dash="dot", color="orange"),
+        yaxis="y2"  
     ))
 
-    # تنظیمات Layout
     fig1.update_layout(
         barmode="stack",
         title="Number of Swappers Over Time",
         xaxis_title=" ",
         yaxis=dict(
-            title="User count",  # محور سمت چپ
+            title="User count",
             side="left"
         ),
         yaxis2=dict(
-            title="User Growth",  # محور سمت راست
+            title="User Growth",  
             overlaying="y",
             side="right",
             showgrid=False
