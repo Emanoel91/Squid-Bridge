@@ -281,7 +281,7 @@ with col2:
     )
     st.plotly_chart(fig2, use_container_width=True)
 
-# --- Row 2 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# --- Row 2 -----------------------------------------------------------------
 @st.cache_data
 def load_pie_data(start_date, end_date):
     start_str = start_date.strftime("%Y-%m-%d")
@@ -377,8 +377,8 @@ def load_pie_data(start_date, end_date):
           )
     )
     SELECT 
-        source_chain as Source_Chain, 
-        COUNT(DISTINCT user) AS Swapper_Count
+        source_chain as SOURCE_CHAIN, 
+        COUNT(DISTINCT user) AS SWAPPER_COUNT
     FROM axelar_service
     WHERE created_at::date >= '{start_str}' 
       AND created_at::date <= '{end_str}'
@@ -388,16 +388,16 @@ def load_pie_data(start_date, end_date):
 
     return pd.read_sql(query, conn)
 
-# --- Load Data ----------------------------------------------------------------------------------------------------
+# --- Load Data --------------------------------------------------------------
 df_pie = load_pie_data(start_date, end_date)
-# --- Layout -------------------------------------------------------------------------------------------------------
 
+# --- Layout -----------------------------------------------------------------
 fig1 = px.bar(
         df_pie.sort_values("SWAPPER_COUNT", ascending=False),
         x="SOURCE_CHAIN", 
         y="SWAPPER_COUNT",
         title="Number of users by chain",
-        labels={"SWAPPER_COUNT": "Wallet Count", "Source Chain": " "},
+        labels={"SWAPPER_COUNT": "Wallet Count", "SOURCE_CHAIN": " "},
         color_discrete_sequence=["#3f48cc"],
         text="SWAPPER_COUNT"   
     )
