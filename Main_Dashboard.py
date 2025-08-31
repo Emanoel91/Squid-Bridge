@@ -500,6 +500,7 @@ def load_user_data(timeframe, start_date, end_date):
         "Total Users",
         "New Users", 
         "Total Users" - "New Users" AS "Active Users",
+        round(((("Total Users" - "New Users")/"Total Users")*100),2) as "Retention Rate"
         "User Growth"
     FROM table1 
     LEFT JOIN table2 ON table1."Date" = table2."Date"
@@ -534,10 +535,10 @@ with col1:
 
 # Chart 2
 with col2:
-    fig2 = px.area(df, x="Date", y="User Growth", title="Users Growth Over Time")
+    fig2 = px.line(df, x="Date", y="Retention Rate", title="%User Retention Rate Over Time")
     fig2.update_layout(
         xaxis_title=" ",
-        yaxis_title="user count",
+        yaxis_title="%",
         template="plotly_white"
     )
     st.plotly_chart(fig2, use_container_width=True)
