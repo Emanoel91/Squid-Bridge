@@ -253,7 +253,7 @@ with col2:
         name="Total Bridged Volume", 
         mode="lines+markers", 
         yaxis="y2",
-        line=dict(color="#9467bd", width=2, dash="dot"),  # بنفش، خط نقطه‌ای
+        line=dict(color="#9467bd", width=2),  # بنفش، خط نقطه‌ای
         marker=dict(color="#8c564b", size=6)              # قهوه‌ای
     ))
     fig2.update_layout(
