@@ -202,8 +202,24 @@ col1, col2 = st.columns(2)
 
 with col1:
     fig1 = go.Figure()
-    fig1.add_bar(x=df_ts["DATE"], y=df_ts["NUMBER_OF_BRIDGES"], name="Number of Bridges", yaxis="y1")
-    fig1.add_trace(go.Scatter(x=df_ts["DATE"], y=df_ts["TOTAL_NUMBER_OF_BRIDGES"], name="Total Number of Bridges", mode="lines+markers", yaxis="y2"))
+    # Bar chart (ستون‌ها)
+    fig1.add_bar(
+        x=df_ts["DATE"], 
+        y=df_ts["NUMBER_OF_BRIDGES"], 
+        name="Number of Bridges", 
+        yaxis="y1",
+        marker=dict(color="#1f77b4")  # آبی
+    )
+    # Line chart (لاین + مارکر)
+    fig1.add_trace(go.Scatter(
+        x=df_ts["DATE"], 
+        y=df_ts["TOTAL_NUMBER_OF_BRIDGES"], 
+        name="Total Number of Bridges", 
+        mode="lines+markers", 
+        yaxis="y2",
+        line=dict(color="#ff7f0e", width=2),   # نارنجی
+        marker=dict(color="#d62728", size=6)   # قرمز
+    ))
     fig1.update_layout(
         title="Number of Bridges Over Time",
         yaxis=dict(title="Txns count"),
@@ -211,19 +227,35 @@ with col1:
         xaxis=dict(title=" "),
         barmode="group",
         legend=dict(
-        orientation="h",   
-        yanchor="bottom", 
-        y=1.05,           
-        xanchor="center",  
-        x=0.5
-    )
+            orientation="h",   
+            yanchor="bottom", 
+            y=1.05,           
+            xanchor="center",  
+            x=0.5
+        )
     )
     st.plotly_chart(fig1, use_container_width=True)
 
 with col2:
     fig2 = go.Figure()
-    fig2.add_bar(x=df_ts["DATE"], y=df_ts["BRIDGED_VOLUME"], name="Bridged Volume", yaxis="y1")
-    fig2.add_trace(go.Scatter(x=df_ts["DATE"], y=df_ts["TOTAL_BRIDGED_VOLUME"], name="Total Bridged Volume", mode="lines+markers", yaxis="y2"))
+    # Bar chart (ستون‌ها)
+    fig2.add_bar(
+        x=df_ts["DATE"], 
+        y=df_ts["BRIDGED_VOLUME"], 
+        name="Bridged Volume", 
+        yaxis="y1",
+        marker=dict(color="#2ca02c")  # سبز
+    )
+    # Line chart (لاین + مارکر)
+    fig2.add_trace(go.Scatter(
+        x=df_ts["DATE"], 
+        y=df_ts["TOTAL_BRIDGED_VOLUME"], 
+        name="Total Bridged Volume", 
+        mode="lines+markers", 
+        yaxis="y2",
+        line=dict(color="#9467bd", width=2, dash="dot"),  # بنفش، خط نقطه‌ای
+        marker=dict(color="#8c564b", size=6)              # قهوه‌ای
+    ))
     fig2.update_layout(
         title="Bridged Volume Over Time",
         yaxis=dict(title="$USD"),
@@ -231,12 +263,11 @@ with col2:
         xaxis=dict(title=" "),
         barmode="group",
         legend=dict(
-        orientation="h",   
-        yanchor="bottom", 
-        y=1.05,           
-        xanchor="center",  
-        x=0.5
-    )
+            orientation="h",   
+            yanchor="bottom", 
+            y=1.05,           
+            xanchor="center",  
+            x=0.5
+        )
     )
     st.plotly_chart(fig2, use_container_width=True)
-
