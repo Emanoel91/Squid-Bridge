@@ -202,23 +202,23 @@ col1, col2 = st.columns(2)
 
 with col1:
     fig1 = go.Figure()
-    # Bar chart (ستون‌ها)
+    # Bar chart
     fig1.add_bar(
         x=df_ts["DATE"], 
         y=df_ts["NUMBER_OF_BRIDGES"], 
         name="Number of Bridges", 
         yaxis="y1",
-        marker=dict(color="#1f77b4")  # آبی
+        marker=dict(color="#00857a")  
     )
-    # Line chart (لاین + مارکر)
+    # Line chart 
     fig1.add_trace(go.Scatter(
         x=df_ts["DATE"], 
         y=df_ts["TOTAL_NUMBER_OF_BRIDGES"], 
         name="Total Number of Bridges", 
         mode="lines+markers", 
         yaxis="y2",
-        line=dict(color="#ff7f0e", width=2),   # نارنجی
-        marker=dict(color="#d62728", size=6)   # قرمز
+        line=dict(color="#fe2708", width=2),   
+        marker=dict(color="#fe2708", size=6)   
     ))
     fig1.update_layout(
         title="Number of Bridges Over Time",
@@ -238,23 +238,23 @@ with col1:
 
 with col2:
     fig2 = go.Figure()
-    # Bar chart (ستون‌ها)
+    # Bar chart 
     fig2.add_bar(
         x=df_ts["DATE"], 
         y=df_ts["BRIDGED_VOLUME"], 
         name="Bridged Volume", 
         yaxis="y1",
-        marker=dict(color="#2ca02c")  # سبز
+        marker=dict(color="#ff8a00")  
     )
-    # Line chart (لاین + مارکر)
+    # Line chart 
     fig2.add_trace(go.Scatter(
         x=df_ts["DATE"], 
         y=df_ts["TOTAL_BRIDGED_VOLUME"], 
         name="Total Bridged Volume", 
         mode="lines+markers", 
         yaxis="y2",
-        line=dict(color="#9467bd", width=2),  # بنفش، خط نقطه‌ای
-        marker=dict(color="#8c564b", size=6)              # قهوه‌ای
+        line=dict(color="#0099ff", width=2),  
+        marker=dict(color="#0099ff", size=6)             
     ))
     fig2.update_layout(
         title="Bridged Volume Over Time",
