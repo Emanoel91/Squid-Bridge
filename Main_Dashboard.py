@@ -521,7 +521,7 @@ with col1:
     fig1.add_trace(go.Bar(x=df["Date"], y=df["Active Users"], name="Active Users"))
     fig1.add_trace(go.Bar(x=df["Date"], y=df["New Users"], name="New Users"))
     fig1.add_trace(go.Scatter(x=df["Date"], y=df["Total Users"], name="Total Users",
-                              mode="lines+markers", line=dict(width=3)))
+                              mode="lines", line=dict(width=3)))
     fig1.update_layout(
         barmode="stack",
         title="Number of Swappers Over Time",
