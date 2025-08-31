@@ -401,9 +401,9 @@ fig2 = px.bar(
     top_user.sort_values("Number of Users", ascending=False),
     x="Source Chain", 
     y="Number of Users",
-    title="Top 10 Source Chains by Number of Users",
+    title="Number of Users by Chain",
     labels={"Number of Users": "Wallet count", "Source Chain": " "},
-    color_discrete_sequence=["#3f48cc"],
+    color_discrete_sequence=["#ff0066"],
     text="Number of Users"
 )
 fig2.update_traces(texttemplate='%{text}', textposition='outside')
