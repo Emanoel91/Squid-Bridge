@@ -393,37 +393,19 @@ def load_source_chain_data(start_date, end_date):
 
 # --- Load Data ----------------------------------------------------------------------------------------------------
 df_source = load_source_chain_data(start_date, end_date)
-# --- Row 5: Top 10 Horizontal Bar Charts ----------------------------------------------------------------------------------
-top_vol = df_source.nlargest(10, "Volume of Transfers (USD)")
-top_txn = df_source.nlargest(10, "Number of Transfers")
 
-col1, col2 = st.columns(2)
+# -- top_vol = df_source.nlargest(10, "Volume of Transfers (USD)")
+# -- top_user = df_source.nlargest(10, "Number of Users")
 
-with col1:
-    fig1 = px.bar(
-        top_vol.sort_values("Volume of Transfers (USD)", ascending=False),
-        x="Source Chain", 
-        y="Volume of Transfers (USD)",
-        title="Top 10 Source Chains by Bridged Volume (USD)",
-        labels={"Volume of Transfers (USD)": "USD", "Source Chain": " "},
-        color_discrete_sequence=["#3f48cc"],
-        text="Volume of Transfers (USD)"   
-    )
-    fig1.update_traces(texttemplate='%{text:.2s}', textposition='outside')  
-    fig1.update_layout(xaxis={'categoryorder':'total descending'})         
-    st.plotly_chart(fig1, use_container_width=True)
-
-with col2:
-    fig2 = px.bar(
-        top_txn.sort_values("Number of Transfers", ascending=False),
-        x="Source Chain", 
-        y="Number of Transfers",
-        title="Top 10 Source Chains by Number of Bridges",
-        labels={"Number of Transfers": "Txns count", "Source Chain": " "},
-        color_discrete_sequence=["#3f48cc"],
-        text="Number of Transfers"
-    )
-    fig2.update_traces(texttemplate='%{text}', textposition='outside')
-    fig2.update_layout(xaxis={'categoryorder':'total descending'})
-    st.plotly_chart(fig2, use_container_width=True) 
-
+fig2 = px.bar(
+    top_user.sort_values("Number of Users", ascending=False),
+    x="Source Chain", 
+    y="Number of Users",
+    title="Top 10 Source Chains by Number of Users",
+    labels={"Number of Users": "Wallet count", "Source Chain": " "},
+    color_discrete_sequence=["#3f48cc"],
+    text="Number of Users"
+)
+fig2.update_traces(texttemplate='%{text}', textposition='outside')
+fig2.update_layout(xaxis={'categoryorder':'total descending'})
+st.plotly_chart(fig2, use_container_width=True)
