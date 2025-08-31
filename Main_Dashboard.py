@@ -389,23 +389,10 @@ def load_pie_data(start_date, end_date):
     return pd.read_sql(query, conn)
 
 # --- Load Data ----------------------------------------------------------------------------------------------------
-
 df_pie = load_pie_data(start_date, end_date)
-
 # --- Layout -------------------------------------------------------------------------------------------------------
-col1, col2 = st.columns(2)
 
-# Pie Chart for Volume
-fig1 = px.pie(
-    df_pie, 
-    values="SWAPPER_COUNT",    
-    names="SOURCE_CHAIN",    
-    title="Number of Users by Chain %"
-)
-fig1.update_traces(textinfo="percent+label", textposition="inside", automargin=True)
-
-
-fig2 = px.bar(
+fig1 = px.bar(
         df_pie.sort_values("SWAPPER_COUNT", ascending=False),
         x="SOURCE_CHAIN", 
         y="SWAPPER_COUNT",
@@ -414,10 +401,6 @@ fig2 = px.bar(
         color_discrete_sequence=["#3f48cc"],
         text="SWAPPER_COUNT"   
     )
-fig2.update_traces(texttemplate='%{text:.2s}', textposition='outside')  
-fig2.update_layout(xaxis={'categoryorder':'total descending'})         
+fig1.update_traces(texttemplate='%{text:.2s}', textposition='outside')  
+fig1.update_layout(xaxis={'categoryorder':'total descending'})         
 st.plotly_chart(fig2, use_container_width=True)
-
-# display charts
-col1.plotly_chart(fig1, use_container_width=True)
-col2.plotly_chart(fig2, use_container_width=True)
