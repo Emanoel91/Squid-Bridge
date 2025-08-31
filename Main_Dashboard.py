@@ -404,7 +404,7 @@ fig1 = px.pie(
 )
 fig1.update_traces(textinfo="percent+label", textposition="inside", automargin=True)
 
-# Pie Chart for Bridges
+# Pie Chart for Volume
 fig2 = px.pie(
     df_pie, 
     values="SWAPPER_COUNT",    
