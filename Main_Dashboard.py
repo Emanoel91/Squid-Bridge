@@ -534,7 +534,7 @@ with col1:
         x=df["Date"], y=df["User Growth"],
         name="User Growth",
         mode="lines",
-        line=dict(width=3, dash="dot", color="green"),
+        line=dict(width=3, dash="dot", color="red"),
         yaxis="y2"  
     ))
 
