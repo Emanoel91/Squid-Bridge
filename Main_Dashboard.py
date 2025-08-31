@@ -281,6 +281,14 @@ with col2:
     )
     st.plotly_chart(fig2, use_container_width=True)
 
+st.markdown(
+    """
+    <div style="background-color:#ffe524; padding:1px; border-radius:10px;">
+        <h2 style="color:#000000; text-align:center;">Squid Users</h2>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 # --- Row 2 ------------------------------------------------
 @st.cache_data
 def load_source_chain_data(start_date, end_date):
