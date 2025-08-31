@@ -519,8 +519,8 @@ col1, col2 = st.columns(2)
 # Chart 1
 with col1:
     fig1 = go.Figure()
-    fig1.add_trace(go.Bar(x=df["Date"], y=df["Active Users"], name="Active Users"))
-    fig1.add_trace(go.Bar(x=df["Date"], y=df["New Users"], name="New Users"))
+    fig1.add_trace(go.Bar(x=df["Date"], y=df["Active Users"], name="Active Users", marker_color="blue"))
+    fig1.add_trace(go.Bar(x=df["Date"], y=df["New Users"], name="New Users", marker_color="green"))
 
     fig1.add_trace(go.Scatter(
         x=df["Date"], y=df["Total Users"],
