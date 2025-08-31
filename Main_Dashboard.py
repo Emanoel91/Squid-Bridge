@@ -500,7 +500,7 @@ def load_user_data(timeframe, start_date, end_date):
         "Total Users",
         "New Users", 
         "Total Users" - "New Users" AS "Active Users",
-        round(((("Total Users" - "New Users")/"Total Users")*100),2) as "Retention Rate"
+        round(((("Total Users" - "New Users")/"Total Users")*100),2) as "Retention Rate",
         "User Growth"
     FROM table1 
     LEFT JOIN table2 ON table1."Date" = table2."Date"
