@@ -82,6 +82,15 @@ with col2:
 with col3:
     end_date = st.date_input("End Date", value=pd.to_datetime("2025-08-31"))
 
+st.markdown(
+    """
+    <div style="background-color:#ffe524; padding:1px; border-radius:10px;">
+        <h2 style="color:#000000; text-align:center;">Stats Over Time</h2>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 # --- Query Function: Row (1) --------------------------------------------------------------------------------------
 @st.cache_data
 def load_time_series_data(timeframe, start_date, end_date):
