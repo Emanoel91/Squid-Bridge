@@ -395,7 +395,7 @@ def load_source_chain_data(start_date, end_date):
 df_source = load_source_chain_data(start_date, end_date)
 
 
-top_user = df_source.nlargest(100,"Number of Users")
+top_user = df_source.nlargest(80,"Number of Users")
 
 fig2 = px.bar(
     top_user.sort_values("Number of Users", ascending=False),
