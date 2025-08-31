@@ -253,8 +253,7 @@ with col2:
         name="Total Bridged Volume", 
         mode="lines+markers", 
         yaxis="y2",
-        line=dict(color="#0099ff", width=2),  
-        marker=dict(color="#0099ff", size=6)             
+        line=dict(color="#0099ff", width=2)            
     ))
     fig2.update_layout(
         title="Bridged Volume Over Time",
