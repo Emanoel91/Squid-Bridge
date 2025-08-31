@@ -519,18 +519,48 @@ col1, col2 = st.columns(2)
 # Chart 1
 with col1:
     fig1 = go.Figure()
+
+    # ستون‌های Active و New Users
     fig1.add_trace(go.Bar(x=df["Date"], y=df["Active Users"], name="Active Users"))
     fig1.add_trace(go.Bar(x=df["Date"], y=df["New Users"], name="New Users"))
-    fig1.add_trace(go.Scatter(x=df["Date"], y=df["Total Users"], name="Total Users",
-                              mode="lines", line=dict(width=3)))
+
+    # خط Total Users
+    fig1.add_trace(go.Scatter(
+        x=df["Date"], y=df["Total Users"],
+        name="Total Users",
+        mode="lines",
+        line=dict(width=3, color="blue"),
+        yaxis="y1"  # محور سمت چپ
+    ))
+
+    # خط User Growth (روی محور دوم سمت راست)
+    fig1.add_trace(go.Scatter(
+        x=df["Date"], y=df["User Growth"],
+        name="User Growth",
+        mode="lines",
+        line=dict(width=3, dash="dot", color="green"),
+        yaxis="y2"  # محور سمت راست
+    ))
+
+    # تنظیمات Layout
     fig1.update_layout(
         barmode="stack",
         title="Number of Swappers Over Time",
         xaxis_title=" ",
-        yaxis_title="User count",
+        yaxis=dict(
+            title="User count",  # محور سمت چپ
+            side="left"
+        ),
+        yaxis2=dict(
+            title="User Growth",  # محور سمت راست
+            overlaying="y",
+            side="right",
+            showgrid=False
+        ),
         legend_title=" ",
         template="plotly_white"
     )
+
     st.plotly_chart(fig1, use_container_width=True)
 
 # Chart 2
