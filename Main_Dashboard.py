@@ -714,3 +714,4 @@ fig_stacked = px.bar(
     title="Outflow From Chains Over Time"
 )
 fig_stacked.update_layout(barmode="stack", yaxis_title="$USD")
+st.plotly_chart(fig_stacked, use_container_width=True)
