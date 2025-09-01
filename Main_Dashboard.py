@@ -715,3 +715,14 @@ fig_stacked = px.bar(
 )
 fig_stacked.update_layout(barmode="stack", yaxis_title="$USD")
 st.plotly_chart(fig_stacked, use_container_width=True)
+
+
+fig_line = px.line(
+    source_chain_stats,
+    x="Date",
+    y="Amount (USD)",
+    color="Chain",
+    title="Cumulative Outflow From Chains Over Time"
+)
+fig_line.update_layout(yaxis_title="$USD")
+st.plotly_chart(fig_stacked, use_container_width=True)
