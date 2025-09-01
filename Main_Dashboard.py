@@ -725,4 +725,4 @@ fig_line = px.line(
     title="Cumulative Outflow From Chains Over Time"
 )
 fig_line.update_layout(yaxis_title="$USD")
-st.plotly_chart(fig_stacked, use_container_width=True)
+st.plotly_chart(fig_line, use_container_width=True)
