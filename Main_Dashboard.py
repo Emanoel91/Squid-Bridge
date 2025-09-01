@@ -575,4 +575,13 @@ with col2:
         template="plotly_white"
     )
     st.plotly_chart(fig2, use_container_width=True)
+# ----------------------------------------------------------------------------------------------------------------------------
+st.markdown(
+    """
+    <div style="background-color:#ffe524; padding:1px; border-radius:10px;">
+        <h2 style="color:#000000; text-align:center;">Inflow/ Outflow to chains through squid</h2>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
