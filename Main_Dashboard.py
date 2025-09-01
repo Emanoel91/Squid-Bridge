@@ -729,7 +729,7 @@ st.plotly_chart(fig_line, use_container_width=True)
 
 # --- Row 6,7 ------------------------------------------------------------------------------------------------------------------
 @st.cache_data
-def load_source_chain_stats(timeframe, start_date, end_date):
+def load_destination_chain_stats(timeframe, start_date, end_date):
     start_str = start_date.strftime("%Y-%m-%d")
     end_str = end_date.strftime("%Y-%m-%d")
     
