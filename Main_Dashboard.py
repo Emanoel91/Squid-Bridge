@@ -585,7 +585,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# --- Row 4 ------------------------------------------------------------------------------------------------------------------
+# --- Row 4,5 ------------------------------------------------------------------------------------------------------------------
 @st.cache_data
 def load_source_chain_stats(timeframe, start_date, end_date):
     start_str = start_date.strftime("%Y-%m-%d")
@@ -703,26 +703,168 @@ GROUP BY 1, 2
 ORDER BY 1
     """
     return pd.read_sql(query, conn)
-
+# --- Load Data --------------------------------------------------------------
 source_chain_stats = load_source_chain_stats(timeframe, start_date, end_date)
-
+# --- stacked bar Chart ------------------------------------------------------
 fig_stacked = px.bar(
     source_chain_stats,
     x="Date",
     y="Amount (USD)",
     color="Chain",
-    title="Outflow From Chains Over Time"
+    title="🔴Outflow From Chains Over Time"
 )
 fig_stacked.update_layout(barmode="stack", yaxis_title="$USD")
 st.plotly_chart(fig_stacked, use_container_width=True)
 
-
+# --- Cumulative line Chart -------------------------------------------------
 fig_line = px.line(
     source_chain_stats,
     x="Date",
     y="Total Amount (USD)",
     color="Chain",
-    title="Cumulative Outflow From Chains Over Time"
+    title="🔴Cumulative Outflow From Chains Over Time"
+)
+fig_line.update_layout(yaxis_title="$USD")
+st.plotly_chart(fig_line, use_container_width=True)
+
+# --- Row 6,7 ------------------------------------------------------------------------------------------------------------------
+@st.cache_data
+def load_source_chain_stats(timeframe, start_date, end_date):
+    start_str = start_date.strftime("%Y-%m-%d")
+    end_str = end_date.strftime("%Y-%m-%d")
+    
+    query = f"""
+        WITH overview as (
+WITH axelar_service AS (
+  
+  SELECT 
+    created_at, 
+    LOWER(data:send:original_source_chain) AS source_chain, 
+    LOWER(data:send:original_destination_chain) AS destination_chain,
+    recipient_address AS user, 
+
+    CASE 
+      WHEN IS_ARRAY(data:send:amount) THEN NULL
+      WHEN IS_OBJECT(data:send:amount) THEN NULL
+      WHEN TRY_TO_DOUBLE(data:send:amount::STRING) IS NOT NULL THEN TRY_TO_DOUBLE(data:send:amount::STRING)
+      ELSE NULL
+    END AS amount,
+
+    CASE 
+      WHEN IS_ARRAY(data:send:amount) OR IS_ARRAY(data:link:price) THEN NULL
+      WHEN IS_OBJECT(data:send:amount) OR IS_OBJECT(data:link:price) THEN NULL
+      WHEN TRY_TO_DOUBLE(data:send:amount::STRING) IS NOT NULL AND TRY_TO_DOUBLE(data:link:price::STRING) IS NOT NULL 
+        THEN TRY_TO_DOUBLE(data:send:amount::STRING) * TRY_TO_DOUBLE(data:link:price::STRING)
+      ELSE NULL
+    END AS amount_usd,
+
+    CASE 
+      WHEN IS_ARRAY(data:send:fee_value) THEN NULL
+      WHEN IS_OBJECT(data:send:fee_value) THEN NULL
+      WHEN TRY_TO_DOUBLE(data:send:fee_value::STRING) IS NOT NULL THEN TRY_TO_DOUBLE(data:send:fee_value::STRING)
+      ELSE NULL
+    END AS fee,
+
+    id, 
+    'Token Transfers' AS "Service", 
+    data:link:asset::STRING AS raw_asset
+
+  FROM axelar.axelscan.fact_transfers
+  WHERE status = 'executed'
+    AND simplified_status = 'received'
+    AND (
+    sender_address ilike '%0xce16F69375520ab01377ce7B88f5BA8C48F8D666%' -- Squid
+    or sender_address ilike '%0x492751eC3c57141deb205eC2da8bFcb410738630%' -- Squid-blast
+    or sender_address ilike '%0xDC3D8e1Abe590BCa428a8a2FC4CfDbD1AcF57Bd9%' -- Squid-fraxtal
+    or sender_address ilike '%0xdf4fFDa22270c12d0b5b3788F1669D709476111E%' -- Squid coral
+    or sender_address ilike '%0xe6B3949F9bBF168f4E3EFc82bc8FD849868CC6d8%' -- Squid coral hub
+) 
+
+  UNION ALL
+
+  SELECT  
+    created_at,
+    LOWER(data:call.chain::STRING) AS source_chain,
+    LOWER(data:call.returnValues.destinationChain::STRING) AS destination_chain,
+    data:call.transaction.from::STRING AS user,
+
+    CASE 
+      WHEN IS_ARRAY(data:amount) OR IS_OBJECT(data:amount) THEN NULL
+      WHEN TRY_TO_DOUBLE(data:amount::STRING) IS NOT NULL THEN TRY_TO_DOUBLE(data:amount::STRING)
+      ELSE NULL
+    END AS amount,
+
+    CASE 
+      WHEN IS_ARRAY(data:value) OR IS_OBJECT(data:value) THEN NULL
+      WHEN TRY_TO_DOUBLE(data:value::STRING) IS NOT NULL THEN TRY_TO_DOUBLE(data:value::STRING)
+      ELSE NULL
+    END AS amount_usd,
+
+    COALESCE(
+      CASE 
+        WHEN IS_ARRAY(data:gas:gas_used_amount) OR IS_OBJECT(data:gas:gas_used_amount) 
+          OR IS_ARRAY(data:gas_price_rate:source_token.token_price.usd) OR IS_OBJECT(data:gas_price_rate:source_token.token_price.usd) 
+        THEN NULL
+        WHEN TRY_TO_DOUBLE(data:gas:gas_used_amount::STRING) IS NOT NULL 
+          AND TRY_TO_DOUBLE(data:gas_price_rate:source_token.token_price.usd::STRING) IS NOT NULL 
+        THEN TRY_TO_DOUBLE(data:gas:gas_used_amount::STRING) * TRY_TO_DOUBLE(data:gas_price_rate:source_token.token_price.usd::STRING)
+        ELSE NULL
+      END,
+      CASE 
+        WHEN IS_ARRAY(data:fees:express_fee_usd) OR IS_OBJECT(data:fees:express_fee_usd) THEN NULL
+        WHEN TRY_TO_DOUBLE(data:fees:express_fee_usd::STRING) IS NOT NULL THEN TRY_TO_DOUBLE(data:fees:express_fee_usd::STRING)
+        ELSE NULL
+      END
+    ) AS fee,
+
+    id, 
+    'GMP' AS "Service", 
+    data:symbol::STRING AS raw_asset
+
+  FROM axelar.axelscan.fact_gmp 
+  WHERE status = 'executed'
+    AND simplified_status = 'received'
+    AND (
+        data:approved:returnValues:contractAddress ilike '%0xce16F69375520ab01377ce7B88f5BA8C48F8D666%' -- Squid
+        or data:approved:returnValues:contractAddress ilike '%0x492751eC3c57141deb205eC2da8bFcb410738630%' -- Squid-blast
+        or data:approved:returnValues:contractAddress ilike '%0xDC3D8e1Abe590BCa428a8a2FC4CfDbD1AcF57Bd9%' -- Squid-fraxtal
+        or data:approved:returnValues:contractAddress ilike '%0xdf4fFDa22270c12d0b5b3788F1669D709476111E%' -- Squid coral
+        or data:approved:returnValues:contractAddress ilike '%0xe6B3949F9bBF168f4E3EFc82bc8FD849868CC6d8%' -- Squid coral hub
+        ) 
+)
+
+SELECT created_at, source_chain, destination_chain, amount_usd
+
+FROM axelar_service)
+
+select date_trunc('week',created_at) as "Date", destination_chain as "Chain", 
+round(sum(amount_usd)) as "Amount (USD)", sum("Amount (USD)") over (partition by "Chain" order by "Date") as "Total Amount (USD)"
+FROM overview
+WHERE created_at::date >= '{start_str}' AND created_at::date <= '{end_str}'
+GROUP BY 1, 2
+ORDER BY 1
+    """
+    return pd.read_sql(query, conn)
+# --- Load Data --------------------------------------------------------------
+destination_chain_stats = load_destination_chain_stats(timeframe, start_date, end_date)
+# --- stacked bar Chart ------------------------------------------------------
+fig_stacked = px.bar(
+    destination_chain_stats,
+    x="Date",
+    y="Amount (USD)",
+    color="Chain",
+    title="🟢Inflow to Chains Over Time"
+)
+fig_stacked.update_layout(barmode="stack", yaxis_title="$USD")
+st.plotly_chart(fig_stacked, use_container_width=True)
+
+# --- Cumulative line Chart -------------------------------------------------
+fig_line = px.line(
+    destination_chain_stats,
+    x="Date",
+    y="Total Amount (USD)",
+    color="Chain",
+    title="🟢Cumulative Inflow to Chains Over Time"
 )
 fig_line.update_layout(yaxis_title="$USD")
 st.plotly_chart(fig_line, use_container_width=True)
