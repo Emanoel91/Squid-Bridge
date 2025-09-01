@@ -695,7 +695,7 @@ SELECT created_at, source_chain, destination_chain, amount_usd
 
 FROM axelar_service)
 
-select date_trunc('week',created_at) as "Date", source_chain as "Chain", 
+select date_trunc('{timeframe}',created_at) as "Date", source_chain as "Chain", 
 round(sum(amount_usd)) as "Amount (USD)", sum("Amount (USD)") over (partition by "Chain" order by "Date") as "Total Amount (USD)"
 FROM overview
 WHERE created_at::date >= '{start_str}' AND created_at::date <= '{end_str}'
@@ -837,7 +837,7 @@ SELECT created_at, source_chain, destination_chain, amount_usd
 
 FROM axelar_service)
 
-select date_trunc('week',created_at) as "Date", destination_chain as "Chain", 
+select date_trunc('{timeframe}',created_at) as "Date", destination_chain as "Chain", 
 round(sum(amount_usd)) as "Amount (USD)", sum("Amount (USD)") over (partition by "Chain" order by "Date") as "Total Amount (USD)"
 FROM overview
 WHERE created_at::date >= '{start_str}' AND created_at::date <= '{end_str}'
