@@ -698,13 +698,13 @@ FROM axelar_service)
 select date_trunc('week',created_at) as "Date", source_chain as "Chain", 
 round(sum(amount_usd)) as "Amount (USD)"
 FROM overview
-WHERE created_at::date>='2025-01-01' and created_at::date<='2025-08-31'
+WHERE created_at::date >= '{start_str}' AND created_at::date <= '{end_str}'
 GROUP BY 1, 2
 ORDER BY 1
     """
     return pd.read_sql(query, conn)
 
-source_chain_stats = load_source_chain_stats(start_date, end_date)
+source_chain_stats = load_source_chain_stats(timeframe, start_date, end_date)
 
 fig_stacked = px.bar(
     source_chain_stats,
